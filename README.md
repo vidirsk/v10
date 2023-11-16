@@ -2,6 +2,6 @@
 
 Setti upp React með Create-react-app til að keyra:
 
-´´´bash
+```bash
 npm start
-´´´
+``````

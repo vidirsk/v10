@@ -1,4 +1,4 @@
-import { getLaunch, searchLaunches } from './api.js';
+import { getEarthquake, searchEarthquakes } from './api.js';
 import { el } from './elements.js';
 
 /**
@@ -69,7 +69,7 @@ function setNotLoading(parentElement, searchForm = undefined) {
 
 /**
  * Birta niðurstöður úr leit.
- * @param {import('./api.types.js').Launch[] | null} results Niðurstöður úr leit
+ * @param {import('./api.types.js').Quake[] | null} results Niðurstöður úr leit
  * @param {string} query Leitarstrengur.
  */
 function createSearchResults(results, query) {
@@ -132,7 +132,7 @@ export async function searchAndRender(parentElement, searchForm, query) {
   }
 
   setLoading(mainElement, searchForm);
-  const results = await searchLaunches(query);
+  const results = await searchEarthquakes(query);
   setNotLoading(mainElement, searchForm);
 
   const resultsEl = createSearchResults(results, query);
@@ -179,7 +179,7 @@ export async function renderDetails(parentElement, id) {
   parentElement.appendChild(container);
 
   setLoading(container);
-  const result = await getLaunch(id);
+  const result = await getEarthquake(id);
   setNotLoading(container);
 
   // Tómt og villu state, við gerum ekki greinarmun á þessu tvennu, ef við
@@ -199,9 +199,9 @@ export async function renderDetails(parentElement, id) {
       )
     : el('p', {}, 'Engar upplýsingar um geimferð.');
 
-  const launchElement = el(
+  const quakeElement = el(
     'article',
-    { class: 'launch' },
+    { class: 'quake' },
     el(
       'section',
       { class: 'info' },
@@ -224,5 +224,5 @@ export async function renderDetails(parentElement, id) {
     backElement,
   );
 
-  container.appendChild(launchElement);
+  container.appendChild(quakeElement);
 }

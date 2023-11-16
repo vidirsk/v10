@@ -1,17 +1,18 @@
 /**
  * API föll.
- * @see https://lldev.thespacedevs.com/2.2.0/swagger/
+ * @see https://earthquake.usgs.gov/fdsnws/event/1/
  */
 
 /**
  * Sækjum týpurnar okkar.
- * @typedef {import('./api.types.js').Launch} Launch
- * @typedef {import('./api.types.js').LaunchDetail} LaunchDetail
- * @typedef {import('./api.types.js').LaunchSearchResults} LaunchSearchResults
+ * @typedef {import('./api.types.js').EarthquakeProperties} EarthquakeProperties
+ * @typedef {import('./api.types.js').EarthquakeGeometry} EarthquakeGeometry
+ * @typedef {import('./api.types.js').EarthquakeFeature} EarthquakeFeature
+ * @typedef {import('./api.types.js').EarthquakeSearchResults} EarthquakeSearchResults
  */
 
 /** Grunnslóð á API (DEV útgáfa) */
-const API_URL = 'https://lldev.thespacedevs.com/2.2.0/';
+const API_URL = 'https://earthquake.usgs.gov/fdsnws/event/1/';
 
 /**
  * Skilar Promise sem bíður í gefnar millisekúndur.
@@ -27,13 +28,15 @@ export async function sleep(ms) {
 /**
  * Leita í geimskota API eftir leitarstreng.
  * @param {string} query Leitarstrengur.
- * @returns {Promise<Launch[] | null>} Fylki af geimskotum eða `null` ef villa
+ * @returns {Promise<Quake[] | null>} Fylki af jarðskjálftum eða `null` ef villa
  *  kom upp.
  */
-export async function searchLaunches(query) {
-  const url = new URL('launch', API_URL);
-  url.searchParams.set('mode', 'list');
-  url.searchParams.set('search', query);
+export async function searchEarthquakes(query) {
+  const url = new URL('query', API_URL);
+  url.searchParams.set('format', 'geojson');
+  url.searchParams.set('starttime', '2023--01'); // Example, adjust as needed
+  url.searchParams.set('endtime', '2023-10-17'); // Example, adjust as needed
+  url.searchParams.set('minmagnitude', '5'); // Minimum magnitude as example
 
   // await sleep(1000);
 
@@ -54,7 +57,7 @@ export async function searchLaunches(query) {
   // réttum gögnum, en `json()` skilar alltaf *öllu* með `any`
   // týpunni sem er of víðtæk til að vera gagnleg.
   // (en hvað ef gögnin eru ekki eins og týpan??)
-  /** @type {LaunchSearchResults | null} */
+  /** @type {QuakeSearchResults | null} */
   let data;
 
   try {
@@ -64,7 +67,7 @@ export async function searchLaunches(query) {
     return null;
   }
 
-  /** @type {Launch[]} */
+  /** @type {Quake[]} */
   const results = data?.results ?? [];
 
   return results;
@@ -72,32 +75,32 @@ export async function searchLaunches(query) {
 
 /**
  * Skilar stöku geimskoti eftir auðkenni eða `null` ef ekkert fannst.
- * @param {string} id Auðkenni geimskots.
- * @returns {Promise<LaunchDetail | null>} Geimskot.
+ * @param {string} id Auðkenni jarðskjálfta.
+ * @returns {Promise<QuakeDetail | null>} Jarðskjálfti.
  */
-export async function getLaunch(id) {
-  const url = new URL(`launch/${id}`, API_URL);
+export async function getEarthquake(id) {
+  const url = new URL(`earthquake/${id}`, API_URL);
 
   let response;
   try {
     response = await fetch(url);
   } catch (e) {
-    console.error('Villa við að sækja gögn um geimskot', e);
+    console.error('Villa við að sækja gögn um jarðskjálfta', e);
     return null;
   }
 
   if (!response.ok) {
-    console.error('Fékk ekki 200 status frá API fyrir geimskot', response);
+    console.error('Fékk ekki 200 status frá API fyrir jarðskjálfta', response);
     return null;
   }
 
-  /** @type {LaunchDetail | null} */
+  /** @type {EarthquakeProperties | null} */
   let data;
 
   try {
     data = await response.json();
   } catch (e) {
-    console.error('Villa við að lesa gögn um geimskot', e);
+    console.error('Villa við að lesa gögn um jarðskjálfta', e);
     return null;
   }
 

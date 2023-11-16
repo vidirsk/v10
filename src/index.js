@@ -25,7 +25,7 @@ async function onSearch(e) {
 
 /**
  * Athugar hvaða síðu við erum á út frá query-string og birtir.
- * Ef `id` er gefið er stakt geimskot birt, annars er forsíða birt með
+ * Ef `id` er gefið er stakur jarðskjálfti birtur, annars er forsíða birt með
  * leitarniðurstöðum ef `query` er gefið.
  */
 function route() {

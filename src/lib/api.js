@@ -26,7 +26,7 @@ export async function sleep(ms) {
 }
 
 /**
- * Leita í geimskota API eftir leitarstreng.
+ * Leita í jarðskjálfta API eftir leitarstreng.
  * @param {string} query Leitarstrengur.
  * @returns {Promise<Quake[] | null>} Fylki af jarðskjálftum eða `null` ef villa
  *  kom upp.
@@ -34,9 +34,9 @@ export async function sleep(ms) {
 export async function searchEarthquakes(query) {
   const url = new URL('query', API_URL);
   url.searchParams.set('format', 'geojson');
-  url.searchParams.set('starttime', '2023--01'); // Example, adjust as needed
-  url.searchParams.set('endtime', '2023-10-17'); // Example, adjust as needed
-  url.searchParams.set('minmagnitude', '5'); // Minimum magnitude as example
+  url.searchParams.set('starttime', '2023--01');
+  url.searchParams.set('endtime', '2023-10-17');
+  url.searchParams.set('minmagnitude', '5');
 
   // await sleep(1000);
 
@@ -53,10 +53,6 @@ export async function searchEarthquakes(query) {
     return null;
   }
 
-  // Smá varkárni: gerum ekki ráð fyrir að API skili alltaf
-  // réttum gögnum, en `json()` skilar alltaf *öllu* með `any`
-  // týpunni sem er of víðtæk til að vera gagnleg.
-  // (en hvað ef gögnin eru ekki eins og týpan??)
   /** @type {QuakeSearchResults | null} */
   let data;
 
@@ -74,7 +70,7 @@ export async function searchEarthquakes(query) {
 }
 
 /**
- * Skilar stöku geimskoti eftir auðkenni eða `null` ef ekkert fannst.
+ * Skilar stökum jarðskjálfta eftir auðkenni eða `null` ef ekkert fannst.
  * @param {string} id Auðkenni jarðskjálfta.
  * @returns {Promise<QuakeDetail | null>} Jarðskjálfti.
  */

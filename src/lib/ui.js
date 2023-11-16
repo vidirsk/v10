@@ -141,7 +141,7 @@ export async function searchAndRender(parentElement, searchForm, query) {
 }
 
 /**
- * Sýna forsíðu, hugsanlega með leitarniðurstöðum.
+ * Sýna forsíðu með leitarniðurstöðum.
  * @param {HTMLElement} parentElement Element sem á að innihalda forsíðu.
  * @param {(e: SubmitEvent) => void} searchHandler Fall sem keyrt er þegar leitað er.
  * @param {string | undefined} query Leitarorð, ef eitthvað, til að sýna niðurstöður fyrir.
@@ -164,7 +164,7 @@ export function renderFrontpage(
 }
 
 /**
- * Sýna geimskot.
+ * Sýna jarðskjálfta.
  * @param {HTMLElement} parentElement Element sem á að innihalda geimskot.
  * @param {string} id Auðkenni geimskots.
  */
